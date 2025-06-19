@@ -1,4 +1,4 @@
-import { createMemoryHistory, createRouter } from 'vue-router';
+import { createWebHistory, createRouter } from 'vue-router';
 
 import Orders from '../pages/Orders.vue';
 import Packages from '../pages/Packages.vue';
@@ -6,14 +6,14 @@ import Products from '../pages/Products.vue';
 import Users from '../pages/Users.vue';
 
 const routes = [
-  { path: '/', component: Orders },
-  { path: '/packages', component: Packages },
-  { path: '/products', component: Products },
-  { path: '/users', component: Users },
+  { path: '/', name: 'orders', component: Orders },
+  { path: '/packages', name: 'packages', component: Packages },
+  { path: '/products', name: 'products', component: Products },
+  { path: '/users', name: 'users', component: Users },
 ];
 
 const router = createRouter({
-  history: createMemoryHistory(),
+  history: createWebHistory(),
   routes,
 });
 

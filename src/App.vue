@@ -5,7 +5,7 @@
 
     <v-main class="d-flex align-center justify-center" height="300">
       <v-container>
-        <router-view> </router-view>
+        <router-view></router-view>
         <!-- <v-sheet 
           border="dashed md"
           color="surface-light"
