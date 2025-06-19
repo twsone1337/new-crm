@@ -1,0 +1,44 @@
+<template>
+  <div>
+    <div class="ma-auto w-25">
+      <v-text-field label="Login" v-model="login"></v-text-field>
+      <v-text-field
+        label="Password"
+        type="password"
+        v-model="password"
+      ></v-text-field>
+      <v-btn block color="primary" @click="textToConsole">Войти</v-btn>
+      {{ loginStore.user }}
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+import axios from 'axios';
+import { useLoginStore } from '../stores/store';
+import { useRouter } from 'vue-router';
+const loginStore = useLoginStore();
+
+const router = useRouter();
+const login = ref('');
+const password = ref('');
+
+async function textToConsole() {
+  const payload = {
+    email: login.value,
+    password: password.value,
+  };
+  try {
+    const { data } = await axios.post(
+      'http://5.189.237.172:3000/auth/login',
+      payload
+    );
+    loginStore.token = data.token;
+    loginStore.user = data.user;
+    router.replace('/');
+  } catch (error) {
+    alert('Ошибка!');
+  }
+}
+</script>
