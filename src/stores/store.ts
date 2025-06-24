@@ -20,4 +20,5 @@ export const useLoginStore = defineStore('login', {
   },
   getters: {},
   actions: {},
+  persist: true,
 });

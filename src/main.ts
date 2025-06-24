@@ -2,6 +2,7 @@ import { createApp } from 'vue';
 import './style.css';
 import App from './App.vue';
 import { createPinia } from 'pinia';
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 
 // Vuetify
 import 'vuetify/styles';
@@ -16,5 +17,6 @@ const vuetify = createVuetify({
 });
 
 const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate);
 
 createApp(App).use(vuetify).use(router).use(pinia).mount('#app');

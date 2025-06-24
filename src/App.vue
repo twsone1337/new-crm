@@ -21,4 +21,14 @@
 <script setup lang="ts">
 import Header from './components/navigation/Header.vue';
 import Sidebar from './components/navigation/Sidebar.vue';
+
+let options = {
+  title: 'Меню',
+  width: 100,
+  height: 200,
+};
+
+let { title } = options;
+
+console.log(title); // Меню
 </script>
