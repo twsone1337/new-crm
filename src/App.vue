@@ -1,7 +1,7 @@
 <template>
   <v-layout class="rounded rounded-md border">
     <Sidebar />
-    <Header />
+    <!-- <Header /> -->
 
     <v-main class="d-flex align-center justify-center" height="300">
       <v-container>
@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import Header from './components/navigation/Header.vue';
+// import Header from './components/navigation/Header.vue';
 import Sidebar from './components/navigation/Sidebar.vue';
 
 let options = {

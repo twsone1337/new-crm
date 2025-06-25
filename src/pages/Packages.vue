@@ -1,18 +1,21 @@
 <template>
-  <div>Упаковки</div>
-  <v-data-table-server
-    class="mt-10"
-    :headers="headers"
-    :items="packages"
-    :items-length="packages.length"
-    @update:options="loadItems"
-  ></v-data-table-server>
+  <div class="mt-16">
+    <div>Упаковки</div>
+    <createPackageModule />
+    <v-data-table-server
+      :headers="headers"
+      :items="packages"
+      :items-length="packages.length"
+      @update:options="loadItems"
+    ></v-data-table-server>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useLoginStore } from '../stores/store';
 import axios from 'axios';
+import createPackageModule from '../components/packages/createPackageModule.vue';
 
 const loginStore = useLoginStore();
 const packages = ref([]);
