@@ -1,5 +1,9 @@
 <template>
-  <div>Продукты</div>
+  <div>
+    Продукты
+    <createNewProduct @update-items="loadItems" />
+  </div>
+
   <v-data-table-server
     class="mt-40"
     :headers="headers"
@@ -17,6 +21,7 @@
 import axios from 'axios';
 import { ref } from 'vue';
 import { useLoginStore } from '../stores/store';
+import createNewProduct from '../components/packages/createNewProduct.vue';
 
 const loginStore = useLoginStore();
 const products = ref([]);

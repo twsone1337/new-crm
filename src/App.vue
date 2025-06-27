@@ -3,7 +3,7 @@
     <Sidebar />
     <!-- <Header /> -->
 
-    <v-main class="d-flex align-center justify-center" height="300">
+    <v-main class="d-flex align-center justify-center">
       <v-container>
         <router-view></router-view>
         <!-- <v-sheet 

@@ -1,21 +1,28 @@
 <template>
-  <v-dialog transition="dialog-bottom-transition" width="auto">
+  <v-dialog v-model="dialog" transition="dialog-bottom-transition" width="auto">
     <template v-slot:activator="{ props: activatorProps }">
-      <v-btn v-bind="activatorProps" text="Добавить упаковку" block></v-btn>
+      <!-- Кнопка для вызова модального окна добавления упаковки -->
+      <v-btn
+        v-bind="activatorProps"
+        text="Добавить упаковку"
+        class="ma-5"
+        color="primary"
+      ></v-btn>
+      <!-- Кнопка для удаления всех упаковок -->
+      <v-btn color="error" @click="deleteAllPackages">
+        Удалить все упаковки
+      </v-btn>
     </template>
 
     <template v-slot:default="{ isActive }">
       <v-card width="500">
         <v-toolbar title="Упаковка"></v-toolbar>
 
-        <v-text-field
-          class=""
-          v-model="name"
-          label="Название упаковки"
-        ></v-text-field>
+        <v-text-field v-model="name" label="Название упаковки"></v-text-field>
 
         <v-card-actions class="justify-end">
           <v-btn text="Close" @click="isActive.value = false"></v-btn>
+          <!-- Кнопка для добавления упаковки -->
           <v-btn
             text="Добавить"
             color="primary"
@@ -35,6 +42,7 @@ import axios from 'axios';
 
 const name = ref('');
 const loginStore = useLoginStore();
+const emit = defineEmits(['update-items']);
 
 const createPackage = async () => {
   const payload = {
@@ -46,8 +54,27 @@ const createPackage = async () => {
   };
   try {
     await axios.post('http://5.189.237.172:3000/packages', payload, config);
+    emit('update-items');
+    dialog.value = false;
   } catch (error) {
     alert('Ошибка');
   }
 };
+
+const deleteAllPackages = async () => {
+  const config = {
+    headers: { Authorization: `Bearer ${loginStore.token}` },
+  };
+  try {
+    if (confirm('Вы действительно хотите удалить все упаковки?')) {
+      await axios.delete('http://5.189.237.172:3000/packages', config);
+      alert('Все упаковки удалены');
+      // здесь можно обновить локальный список упаковок или сделать запрос заново
+    }
+  } catch (error) {
+    alert('Ошибка при удалении');
+  }
+};
+
+const dialog = ref(false);
 </script>
