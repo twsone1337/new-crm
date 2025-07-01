@@ -3,16 +3,16 @@
     <template v-slot:activator="{ props: activatorProps }">
       <v-btn
         v-bind="activatorProps"
-        text="Добавить продукт"
+        text="Редактировать"
         class="ma-5"
         color="primary"
+        border
       >
-        Добавить продукт
       </v-btn>
     </template>
     <template #default>
       <v-card width="500">
-        <v-toolbar title="Добавление продукта"></v-toolbar>
+        <v-toolbar title="Редактирование продукта"></v-toolbar>
         <v-card-text>
           <v-text-field v-model="form.name" label="Название" />
           <v-text-field v-model="form.description" label="Описание" />
@@ -45,7 +45,7 @@
             text="Добавить"
             color="primary"
             variant="flat"
-            @click="createProduct"
+            @click="editProduct"
           ></v-btn>
         </v-card-actions>
       </v-card>
@@ -54,13 +54,16 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue';
 import axios from 'axios';
+import { onMounted, ref, reactive } from 'vue';
 import { useLoginStore } from '../../stores/store';
 
 const loginStore = useLoginStore();
 const dialog = ref(false);
+const packages = ref([]);
+const products = ref([]);
 const emit = defineEmits(['update-items']);
+const props = defineProps<{ id: number }>();
 
 const form = reactive({
   name: '',
@@ -73,7 +76,21 @@ const form = reactive({
   packageId: null,
 });
 
-const packages = ref([]);
+const loadItem = async () => {
+  const config = {
+    headers: { Authorization: `Bearer ${loginStore.token}` },
+  };
+  try {
+    const { data } = await axios.get(
+      `http://5.189.237.172:3000/products/${props.id}`,
+      config
+    );
+
+    products.value = data;
+  } catch (error) {
+    alert('Ошибка в получении продуктов!');
+  }
+};
 
 const loadPackages = async () => {
   const config = {
@@ -86,10 +103,13 @@ const loadPackages = async () => {
     );
 
     packages.value = data;
-  } catch (error) {}
+    console.log('Это продукты:', products);
+  } catch (error) {
+    alert('Ошибка в получении упаковок!');
+  }
 };
 
-const createProduct = async () => {
+const editProduct = async () => {
   const config = {
     headers: { Authorization: `Bearer ${loginStore.token}` },
   };
@@ -100,15 +120,20 @@ const createProduct = async () => {
     weightOrVolume: Number(form.weightOrVolume),
   };
   try {
-    await axios.post('http://5.189.237.172:3000/products', payload, config);
+    await axios.patch(
+      `http://5.189.237.172:3000/products/${props.id}`,
+      payload,
+      config
+    );
     emit('update-items');
     dialog.value = false;
   } catch (error) {
-    alert('Ошибка!');
+    alert('Ошибка в отправке продукта!');
   }
 };
 
 onMounted(() => {
   loadPackages();
+  loadItem();
 });
 </script>

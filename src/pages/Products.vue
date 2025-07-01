@@ -4,7 +4,7 @@
     <createNewProduct @update-items="loadItems" />
   </div>
 
-  <v-data-table-server
+  <!-- <v-data-table-server
     class="mt-40"
     :headers="headers"
     :items="products"
@@ -14,14 +14,43 @@
     <template #item.weightOrVolume="{ item }">
       {{ item.weightOrVolume }} {{ item.unit }}
     </template></v-data-table-server
-  >
+  > -->
+
+  <v-row>
+    <v-col cols="3" v-for="product in products"
+      ><v-card class="mx-auto">
+        <v-card-item>
+          <v-card-title> {{ product.name }}</v-card-title>
+
+          <v-card-subtitle>
+            <span class="me-1">{{ product.description }}</span>
+          </v-card-subtitle>
+        </v-card-item>
+
+        <div class="px-4 mb-2">
+          <v-chip class="ma-1">Цена - {{ product.price }}р</v-chip>
+
+          <v-chip class="ma-1">Количество - {{ product.quantity }}</v-chip>
+
+          <v-chip class="ma-1">Вес/Объем - {{ product.weightOrVolume }}</v-chip>
+
+          <v-chip class="ma-1">Срок хранения - {{ product.expire }}</v-chip>
+          <v-chip class="ma-1">{{ product.package?.name }}</v-chip>
+        </div>
+
+        <v-card-actions>
+          <editProductModule :id="product.id" @update-items="loadItems" />
+        </v-card-actions> </v-card
+    ></v-col>
+  </v-row>
 </template>
 
 <script setup lang="ts">
 import axios from 'axios';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useLoginStore } from '../stores/store';
 import createNewProduct from '../components/packages/createNewProduct.vue';
+import editProductModule from '../components/packages/editProductModule.vue';
 
 const loginStore = useLoginStore();
 const products = ref([]);
@@ -39,14 +68,8 @@ const loadItems = async () => {
     products.value = data;
   } catch (error) {}
 };
-const headers = ref([
-  { title: 'ID Упаковки', key: 'id' },
-  { title: 'Название', key: 'name' },
-  { title: 'Описание', key: 'description' },
-  { title: 'Количество', key: 'quantity' },
-  { title: 'Цена', key: 'price' },
-  { title: 'Вес или объем', key: 'weightOrVolume' },
-  { title: 'Создано', key: 'createdAt' },
-  { title: 'Отредактировано', key: 'updateddAt' },
-]);
+
+onMounted(() => {
+  loadItems();
+});
 </script>
