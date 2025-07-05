@@ -4,18 +4,6 @@
     <createNewProduct @update-items="loadItems" />
   </div>
 
-  <!-- <v-data-table-server
-    class="mt-40"
-    :headers="headers"
-    :items="products"
-    :items-length="products.length"
-    @update:options="loadItems"
-  >
-    <template #item.weightOrVolume="{ item }">
-      {{ item.weightOrVolume }} {{ item.unit }}
-    </template></v-data-table-server
-  > -->
-
   <v-row>
     <v-col cols="3" v-for="product in products"
       ><v-card class="mx-auto">

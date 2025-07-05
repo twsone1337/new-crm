@@ -8,7 +8,6 @@
         v-model="password"
       ></v-text-field>
       <v-btn block color="primary" @click="textToConsole">Войти</v-btn>
-      {{ loginStore.user }}
     </div>
   </div>
 </template>
@@ -35,10 +34,26 @@ async function textToConsole() {
       payload
     );
     loginStore.token = data.token;
-    loginStore.user = data.user;
+    getMe();
     router.replace('/');
+    console.log('Вы успешно авторизованы!');
   } catch (error) {
     alert('Ошибка!');
+  }
+}
+
+async function getMe() {
+  const config = {
+    headers: { Authorization: `Bearer ${loginStore.token}` },
+  };
+  try {
+    const { data } = await axios.get(
+      'http://5.189.237.172:3000/auth/me',
+      config
+    );
+    loginStore.user = data;
+  } catch (error) {
+    alert('Ошибка');
   }
 }
 </script>

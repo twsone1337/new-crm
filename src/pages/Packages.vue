@@ -10,8 +10,8 @@
     >
       <template #item.actions="{ item }">
         <v-btn color="error" @click="deletePackage(item.id)">Удалить</v-btn>
-      </template></v-data-table-server
-    >
+      </template>
+    </v-data-table-server>
   </div>
 </template>
 
@@ -20,9 +20,10 @@ import { ref } from 'vue';
 import { useLoginStore } from '../stores/store';
 import axios from 'axios';
 import createPackageModule from '../components/packages/createPackageModule.vue';
+import type { IPackage } from '../types/packages';
 
 const loginStore = useLoginStore();
-const packages = ref<any>([]);
+const packages = ref<IPackage[]>([]);
 
 const loadItems = async () => {
   const config = {
@@ -38,7 +39,7 @@ const loadItems = async () => {
   } catch (error) {}
 };
 
-const deletePackage = async (id: number) => {
+const deletePackage = async (id: string) => {
   const config = {
     headers: { Authorization: `Bearer ${loginStore.token}` },
   };

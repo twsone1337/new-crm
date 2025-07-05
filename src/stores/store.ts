@@ -1,15 +1,9 @@
 import { defineStore } from 'pinia';
+import type { IUser } from '../types/user';
 
 interface ILogin {
   token: string;
-  user: {
-    id: number;
-    email: string;
-    name: string;
-    role: string;
-    created_at: string;
-    updatedd_at: string;
-  } | null;
+  user: IUser | null;
 }
 export const useLoginStore = defineStore('login', {
   state: (): ILogin => {

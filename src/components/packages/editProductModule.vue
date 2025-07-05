@@ -1,5 +1,10 @@
 <template>
-  <v-dialog v-model="dialog" transition="dialog-bottom-transition" width="auto">
+  <v-dialog
+    v-model="dialog"
+    transition="dialog-bottom-transition"
+    width="auto"
+    @after-enter="iditData"
+  >
     <template v-slot:activator="{ props: activatorProps }">
       <v-btn
         v-bind="activatorProps"
@@ -63,7 +68,7 @@ const dialog = ref(false);
 const packages = ref([]);
 const products = ref([]);
 const emit = defineEmits(['update-items']);
-const props = defineProps<{ id: number }>();
+const product = defineProps<{ id: number }>();
 
 const form = reactive({
   name: '',
@@ -82,7 +87,7 @@ const loadItem = async () => {
   };
   try {
     const { data } = await axios.get(
-      `http://5.189.237.172:3000/products/${props.id}`,
+      `http://5.189.237.172:3000/products/${product.id}`,
       config
     );
 
@@ -121,7 +126,7 @@ const editProduct = async () => {
   };
   try {
     await axios.patch(
-      `http://5.189.237.172:3000/products/${props.id}`,
+      `http://5.189.237.172:3000/products/${product.id}`,
       payload,
       config
     );
@@ -132,8 +137,8 @@ const editProduct = async () => {
   }
 };
 
-onMounted(() => {
+function iditData() {
   loadPackages();
   loadItem();
-});
+}
 </script>
