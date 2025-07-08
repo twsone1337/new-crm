@@ -1,31 +1,35 @@
 <template>
   <div>Заказы</div>
   <!-- <createOrder /> -->
+  <div v-if="!loginStore.user">
+    <h1>Авторизуйтесь, чтобы увидеть заказы</h1>
+  </div>
+  <div v-else>
+    <v-data-table-server
+      :headers="headers"
+      :items="orders"
+      :items-length="orders.length"
+      @update:options="loadOrders"
+    >
+      <template #item.user="{ item }">
+        <v-chip size="x-small" label variant="outlined" class="mr-1">
+          {{ item.user.id }}
+        </v-chip>
+        <b>{{ item.user.email }}</b>
+      </template>
+      <template #item.items="{ item }">
+        <v-chip v-for="(product, index) in item.items" :key="index">
+          {{ product.product.name }} - {{ product.quantity }}шт
+        </v-chip>
+      </template>
 
-  <v-data-table-server
-    :headers="headers"
-    :items="orders"
-    :items-length="orders.length"
-    @update:options="loadOrders"
-  >
-    <template #item.user="{ item }">
-      <v-chip size="x-small" label variant="outlined" class="mr-1">
-        {{ item.user.id }}
-      </v-chip>
-      <b>{{ item.user.email }}</b>
-    </template>
-    <template #item.items="{ item }">
-      <v-chip v-for="(product, index) in item.items" :key="index">
-        {{ product.product.name }} - {{ product.quantity }}шт
-      </v-chip>
-    </template>
-
-    <template #item.status="{ item }">
-      <v-chip color="red">
-        {{ item.status }}
-      </v-chip>
-    </template>
-  </v-data-table-server>
+      <template #item.status="{ item }">
+        <v-chip color="red">
+          {{ item.status }}
+        </v-chip>
+      </template>
+    </v-data-table-server>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -33,7 +37,7 @@ import { ref } from 'vue';
 import { useLoginStore } from '../stores/store';
 import axios from 'axios';
 import dayjs from 'dayjs';
-
+import type { IUser } from '../types/user';
 // import createOrder from '../components/orders/createOrder.vue';
 
 const orders = ref([]);

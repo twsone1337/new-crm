@@ -12,7 +12,9 @@
         {{ loginStore.user.email }}
       </v-list-item>
 
-      <v-list-item title="Заказы" to="/"></v-list-item>
+      <v-list-item title="Заказы" to="/"
+
+      </v-list-item>
       <v-list-item title="Продукты" to="/products"></v-list-item>
       <v-list-item title="Упаковки" to="/packages"></v-list-item>
       <v-btn
