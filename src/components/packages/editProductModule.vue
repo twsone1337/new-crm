@@ -87,7 +87,7 @@ const loadItem = async () => {
   };
   try {
     const { data } = await axios.get(
-      `http://5.189.237.172:3000/products/${product.id}`,
+      `http://localhost:3000/products/${product.id}`,
       config
     );
 
@@ -103,7 +103,7 @@ const loadPackages = async () => {
   };
   try {
     const { data } = await axios.get<any>(
-      'http://5.189.237.172:3000/packages',
+      'http://localhost:3000/packages',
       config
     );
 
@@ -126,7 +126,7 @@ const editProduct = async () => {
   };
   try {
     await axios.patch(
-      `http://5.189.237.172:3000/products/${product.id}`,
+      `http://localhost:3000/products/${product.id}`,
       payload,
       config
     );

@@ -81,7 +81,7 @@ const loadPackages = async () => {
   };
   try {
     const { data } = await axios.get<any>(
-      'http://5.189.237.172:3000/packages',
+      'http://localhost:3000/packages',
       config
     );
 
@@ -100,7 +100,7 @@ const createProduct = async () => {
     weightOrVolume: Number(form.weightOrVolume),
   };
   try {
-    await axios.post('http://5.189.237.172:3000/products', payload, config);
+    await axios.post('http://localhost:3000/products', payload, config);
     emit('update-items');
     dialog.value = false;
   } catch (error) {

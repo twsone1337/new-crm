@@ -18,9 +18,11 @@
         <div class="px-4 mb-2">
           <v-chip class="ma-1">Цена - {{ product.price }}р</v-chip>
 
-          <v-chip class="ma-1">Количество - {{ product.quantity }}</v-chip>
+          <v-chip class="ma-1">Количество - {{ product.quantity }}шт</v-chip>
 
-          <v-chip class="ma-1">Вес/Объем - {{ product.weightOrVolume }}</v-chip>
+          <v-chip class="ma-1"
+            >Вес/Объем - {{ product.weightOrVolume }}{{ product.unit }}</v-chip
+          >
 
           <v-chip class="ma-1">Срок хранения - {{ product.expire }}</v-chip>
           <v-chip class="ma-1">{{ product.package?.name }}</v-chip>
@@ -48,10 +50,7 @@ const loadItems = async () => {
     headers: { Authorization: `Bearer ${loginStore.token}` },
   };
   try {
-    const { data } = await axios.get(
-      'http://5.189.237.172:3000/products',
-      config
-    );
+    const { data } = await axios.get('http://localhost:3000/products', config);
 
     products.value = data;
   } catch (error) {}

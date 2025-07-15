@@ -1,6 +1,6 @@
 <template>
   <div>Заказы</div>
-  <!-- <createOrder /> -->
+  <createOrder @update-order="loadOrders" />
   <div v-if="!loginStore.user">
     <h1>Авторизуйтесь, чтобы увидеть заказы</h1>
   </div>
@@ -28,6 +28,44 @@
           {{ item.status }}
         </v-chip>
       </template>
+      <template #item.actions="{ item }">
+        <v-btn
+          size="x-small"
+          icon
+          variant="outlined"
+          color="grey"
+          class="rounded-lg"
+        >
+          <v-icon icon="mdi-dots-vertical" color="black"></v-icon>
+
+          <v-menu
+            activator="parent"
+            location="bottom end"
+            transition="fade-transition"
+          >
+            <v-list density="compact" min-width="250" rounded="lg" slim>
+              <v-list-item
+                prepend-icon="mdi-check"
+                title="Подтвердить оплату"
+                base-color="green"
+                @click="changeStatus(StatusEnum.PAYED, item.id)"
+              ></v-list-item>
+              <v-list-item
+                prepend-icon="mdi-close"
+                title="Отменить заказ"
+                base-color="red"
+                @click="changeStatus(StatusEnum.CANCELLED, item.id)"
+              ></v-list-item>
+              <v-list-item
+                prepend-icon="mdi-clock-time-eight-outline"
+                title="Ожидание"
+                base-color="blue"
+                @click="changeStatus(StatusEnum.PENDING, item.id)"
+              ></v-list-item>
+            </v-list>
+          </v-menu>
+        </v-btn>
+      </template>
     </v-data-table-server>
   </div>
 </template>
@@ -37,8 +75,11 @@ import { ref } from 'vue';
 import { useLoginStore } from '../stores/store';
 import axios from 'axios';
 import dayjs from 'dayjs';
+import 'dayjs/locale/ru';
 import type { IUser } from '../types/user';
-// import createOrder from '../components/orders/createOrder.vue';
+import CreateOrder from '../components/orders/createOrder.vue';
+import type { StatusEnum } from '../types/orders';
+dayjs.locale('ru'); // для русского языка
 
 const orders = ref([]);
 const loginStore = useLoginStore();
@@ -48,7 +89,7 @@ const loadOrders = async () => {
   };
   try {
     const { data } = await axios.get<any>(
-      'http://5.189.237.172:3000/orders',
+      'http://localhost:3000/orders',
       config
     );
 
@@ -63,7 +104,7 @@ const headers = ref<any>([
   {
     title: 'Дата',
     key: 'createdAt',
-    value: (i: IUser) => dayjs(i.created_at).format('dddd, h:mm A'),
+    value: (i: IUser) => dayjs(i.created_at).format('dddd, HH:mm'),
   },
   { title: 'Ответственный', key: 'user' },
   { title: 'Товары', key: 'items' },
@@ -71,4 +112,8 @@ const headers = ref<any>([
   { title: 'Статус', key: 'status' },
   { title: 'Действия', key: 'actions' },
 ]);
+
+const changeStatus = (status: StatusEnum, id: string) => {
+  console.log(status, id);
+};
 </script>

@@ -5,7 +5,7 @@
         <v-avatar color="grey" class="mr-2">
           <v-img
             v-if="loginStore.user.avatar"
-            :src="`http://5.189.237.172:3000/${loginStore.user.avatar}`"
+            :src="`http://localhost:3000/${loginStore.user.avatar}`"
           ></v-img>
           <span v-else> {{ loginStore.user.name[0] }}</span>
         </v-avatar>

@@ -17,7 +17,7 @@
       <v-avatar color="grey" class="mr-2">
         <v-img
           v-if="item.avatar"
-          :src="`http://5.189.237.172:3000/${item.avatar}`"
+          :src="`http://localhost:3000/${item.avatar}`"
         ></v-img>
         <span v-else> {{ item.name[0] }}</span>
       </v-avatar>
@@ -44,7 +44,7 @@ const loadItems = async () => {
     headers: { Authorization: `Bearer ${loginStore.token}` },
   };
   try {
-    const { data } = await axios.get('http://5.189.237.172:3000/users', config);
+    const { data } = await axios.get('http://localhost:3000/users', config);
 
     users.value = data;
     console.log(users);

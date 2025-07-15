@@ -31,7 +31,7 @@ const loadItems = async () => {
   };
   try {
     const { data } = await axios.get<any>(
-      'http://5.189.237.172:3000/packages',
+      'http://localhost:3000/packages',
       config
     );
 
@@ -44,7 +44,7 @@ const deletePackage = async (id: string) => {
     headers: { Authorization: `Bearer ${loginStore.token}` },
   };
   try {
-    await axios.delete(`http://5.189.237.172:3000/packages/${id}`, config);
+    await axios.delete(`http://localhost:3000/packages/${id}`, config);
     // Обновить список после удаления
   } catch (error) {
     console.error('Ошибка при удалении упаковки', error);

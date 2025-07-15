@@ -30,7 +30,7 @@ async function textToConsole() {
   };
   try {
     const { data } = await axios.post(
-      'http://5.189.237.172:3000/auth/login',
+      'http://localhost:3000/auth/login',
       payload
     );
     loginStore.token = data.token;
@@ -47,10 +47,7 @@ async function getMe() {
     headers: { Authorization: `Bearer ${loginStore.token}` },
   };
   try {
-    const { data } = await axios.get(
-      'http://5.189.237.172:3000/auth/me',
-      config
-    );
+    const { data } = await axios.get('http://localhost:3000/auth/me', config);
     loginStore.user = data;
   } catch (error) {
     alert('Ошибка');

@@ -53,7 +53,7 @@ const createPackage = async () => {
     headers: { Authorization: `Bearer ${loginStore.token}` },
   };
   try {
-    await axios.post('http://5.189.237.172:3000/packages', payload, config);
+    await axios.post('http://localhost:3000/packages', payload, config);
     emit('update-items');
     dialog.value = false;
   } catch (error) {
@@ -67,7 +67,7 @@ const deleteAllPackages = async () => {
   };
   try {
     if (confirm('Вы действительно хотите удалить все упаковки?')) {
-      await axios.delete('http://5.189.237.172:3000/packages', config);
+      await axios.delete('http://localhost:3000/packages', config);
       alert('Все упаковки удалены');
       // здесь можно обновить локальный список упаковок или сделать запрос заново
     }
